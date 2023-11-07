@@ -18,6 +18,7 @@ let id = Math.floor(Math.random() * 1000);
 
 const addResponse = async (userResponse) => {
   console.log(userResponse);
+  console.log(PUBLIC_DATABASE_URL);
   try {
     await client.query(`
   CREATE TABLE IF NOT EXISTS Responses (
