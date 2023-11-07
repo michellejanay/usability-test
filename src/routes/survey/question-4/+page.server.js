@@ -12,7 +12,8 @@ let id = Math.floor(Math.random() * 1000);
 
 const addResponse = async (userResponse) => {
   console.log(userResponse);
-  await pool.sql`
+  try {
+    await pool.sql`
   CREATE TABLE IF NOT EXISTS Responses (
     id SERIAL PRIMARY KEY, 
     response1 VARCHAR(255),
@@ -23,17 +24,20 @@ const addResponse = async (userResponse) => {
   );
   `;
 
-  const result = await pool.sql`
+    const result = await pool.sql`
     INSERT INTO public.responses(
       id, response1, response2, response3, userPreference, "createdAt")
       VALUES (
         ${id}, ${userResponse.response1}, ${userResponse.response2}, ${
-    userResponse.response3
-  }, ${userResponse.userPreference}, ${new Date()}
+      userResponse.response3
+    }, ${userResponse.userPreference}, ${new Date()}
       );
     `;
-  console.log(result);
-  return { result };
+    console.log(result);
+    return { result };
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export const actions = {
