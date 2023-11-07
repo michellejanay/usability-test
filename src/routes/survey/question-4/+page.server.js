@@ -4,7 +4,7 @@ import { fail, redirect } from "@sveltejs/kit";
 import { createPool } from "@vercel/postgres";
 const pool = createPool({
   connectionString: import.meta.env.VITE_DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
+  // ssl: { rejectUnauthorized: false },
 });
 let responseCreated = false;
 
