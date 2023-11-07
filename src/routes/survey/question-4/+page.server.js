@@ -2,10 +2,15 @@
 import { v4 as uuidv4 } from "uuid";
 import { fail, redirect } from "@sveltejs/kit";
 import { createPool } from "@vercel/postgres";
-const pool = createPool({
-  connectionString: import.meta.env.VITE_DATABASE_URL,
+import pg from "pg";
+import { idText } from "typescript";
+const { Client } = pg;
+
+const client = new Client({
+  connectionString: import.meta.env.VITE_DATABASE_URL + "?sslmode=require",
   // ssl: { rejectUnauthorized: false },
 });
+client.connect();
 let responseCreated = false;
 
 let id = Math.floor(Math.random() * 1000);
@@ -13,28 +18,39 @@ let id = Math.floor(Math.random() * 1000);
 const addResponse = async (userResponse) => {
   console.log(userResponse);
   try {
-    await pool.sql`
+    await client.query(`
   CREATE TABLE IF NOT EXISTS Responses (
     id SERIAL PRIMARY KEY, 
     response1 VARCHAR(255),
     response2 VARCHAR(225),
     response3 VARCHAR(225),
     userpreference VARCHAR(225),
-    "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    "createdAt" TIMESTAMP
   );
-  `;
+  `);
 
-    const result = await pool.sql`
+    const result = await client.query(
+      `
     INSERT INTO public.responses(
-      id, response1, response2, response3, userPreference, "createdAt")
+      id, response1, response2, response3, userpreference, "createdAt")
       VALUES (
-        ${id}, ${userResponse.response1}, ${userResponse.response2}, ${
-      userResponse.response3
-    }, ${userResponse.userPreference}, ${new Date()}
-      );
-    `;
-    console.log(result);
+        $1, $2, $3, $4, $5, $6
+      )
+      RETURNING *;
+    `,
+      [
+        id,
+        userResponse.response1,
+        userResponse.response2,
+        userResponse.response3,
+        userResponse.userPreference,
+        new Date(),
+      ]
+    );
+
+    console.log(result.rows[0]);
     return { result };
+    // responseCreated = true;
   } catch (err) {
     console.log(err);
   }

@@ -23,6 +23,7 @@
 	"type": "module",
 	"dependencies": {
 		"@vercel/postgres": "^0.5.1",
+		"pg": "^8.11.3",
 		"uuid": "^9.0.1"
 	}
 }
