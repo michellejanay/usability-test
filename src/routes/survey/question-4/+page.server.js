@@ -7,7 +7,7 @@ import { idText } from "typescript";
 const { Client } = pg;
 
 const client = new Client({
-  connectionString: import.meta.env.VITE_DATABASE_URL + "?sslmode=require",
+  connectionString: import.meta.env.VITE_DATABASE_URL,
   // ssl: { rejectUnauthorized: false },
 });
 client.connect();
