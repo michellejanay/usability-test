@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1,
+  legend {
+    @apply text-2xl;
+    @apply my-2;
+  }
+  p {
+    @apply my-4;
+  }
+  li {
+    @apply list-none;
+    @apply my-2;
+  }
+  textarea {
+    @apply mb-4;
+  }
+  a,
+  button {
+    @apply py-2;
+    @apply px-4;
+    @apply bg-black;
+    @apply text-white;
+    @apply my-2;
+  }
+}
