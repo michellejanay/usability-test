@@ -5,10 +5,10 @@ import { createPool } from "@vercel/postgres";
 import pg from "pg";
 import { idText } from "typescript";
 const { Client } = pg;
-import DATABASE_URL from "$env/static/private";
+import { PUBLIC_DATABASE_URL } from "$env/static/public";
 
 const client = new Client({
-  connectionString: DATABASE_URL + "?sslmode=require",
+  connectionString: PUBLIC_DATABASE_URL + "?sslmode=require",
   // ssl: { rejectUnauthorized: false },
 });
 client.connect();
@@ -17,7 +17,6 @@ let responseCreated = false;
 let id = Math.floor(Math.random() * 1000);
 
 const addResponse = async (userResponse) => {
-  console.log(import.meta.env.VITE_DATABASE_URL);
   console.log(userResponse);
   try {
     await client.query(`
