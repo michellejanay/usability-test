@@ -1,14 +1,11 @@
 /** @type {import('./$types').Actions} */
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 import { fail, redirect } from "@sveltejs/kit";
-import { createPool } from "@vercel/postgres";
 import pg from "pg";
-import { idText } from "typescript";
 const { Client } = pg;
-import { PUBLIC_DATABASE_URL } from "$env/static/public";
 
 const client = new Client({
-  connectionString: PUBLIC_DATABASE_URL + "?sslmode=require",
+  connectionString: import.meta.env.PRIVATE_DATABASE_URL + "?sslmode=require",
   // ssl: { rejectUnauthorized: false },
 });
 client.connect();
@@ -18,7 +15,6 @@ let id = Math.floor(Math.random() * 1000);
 
 const addResponse = async (userResponse) => {
   console.log(userResponse);
-  console.log(PUBLIC_DATABASE_URL);
   try {
     await client.query(`
   CREATE TABLE IF NOT EXISTS Responses (
@@ -27,14 +23,14 @@ const addResponse = async (userResponse) => {
     response2 VARCHAR(225),
     response3 VARCHAR(225),
     userpreference VARCHAR(225),
-    "createdAt" TIMESTAMP
+    createdat TIMESTAMP
   );
   `);
 
     const result = await client.query(
       `
     INSERT INTO public.responses(
-      id, response1, response2, response3, userpreference, "createdAt")
+      id, response1, response2, response3, userpreference, createdat)
       VALUES (
         $1, $2, $3, $4, $5, $6
       )
