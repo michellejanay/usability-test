@@ -3,7 +3,6 @@
 import { fail, redirect } from "@sveltejs/kit";
 import pg from "pg";
 const { Client } = pg;
-// import { PUBLIC_DATABASE_URL } from "$env/dynamic/public";
 
 const client = new Client({
   connectionString: import.meta.env.VITE_DATABASE_URL + "?sslmode=require",
