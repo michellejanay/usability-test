@@ -3,9 +3,10 @@
 import { fail, redirect } from "@sveltejs/kit";
 import pg from "pg";
 const { Client } = pg;
+// import { PUBLIC_DATABASE_URL } from "$env/dynamic/public";
 
 const client = new Client({
-  connectionString: import.meta.env.PRIVATE_DATABASE_URL + "?sslmode=require",
+  connectionString: import.meta.env.VITE_DATABASE_URL + "?sslmode=require",
   // ssl: { rejectUnauthorized: false },
 });
 client.connect();
@@ -15,6 +16,7 @@ let id = Math.floor(Math.random() * 1000);
 
 const addResponse = async (userResponse) => {
   console.log(userResponse);
+  console.log(client);
   try {
     await client.query(`
   CREATE TABLE IF NOT EXISTS Responses (
@@ -23,14 +25,14 @@ const addResponse = async (userResponse) => {
     response2 VARCHAR(225),
     response3 VARCHAR(225),
     userpreference VARCHAR(225),
-    createdat TIMESTAMP
+    "createdAt" TIMESTAMP
   );
   `);
 
     const result = await client.query(
       `
     INSERT INTO public.responses(
-      id, response1, response2, response3, userpreference, createdat)
+      id, response1, response2, response3, userpreference, "createdAt")
       VALUES (
         $1, $2, $3, $4, $5, $6
       )
