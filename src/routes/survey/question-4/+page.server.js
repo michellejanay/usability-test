@@ -17,16 +17,16 @@ const addResponse = async (userResponse) => {
   console.log(userResponse);
   console.log(client);
   try {
-    await client.query(`
-  CREATE TABLE IF NOT EXISTS Responses (
-    id SERIAL PRIMARY KEY, 
-    response1 VARCHAR(255),
-    response2 VARCHAR(225),
-    response3 VARCHAR(225),
-    userpreference VARCHAR(225),
-    "createdAt" TIMESTAMP
-  );
-  `);
+    //   await client.query(`
+    // CREATE TABLE IF NOT EXISTS Responses (
+    //   id SERIAL PRIMARY KEY,
+    //   response1 VARCHAR(255),
+    //   response2 VARCHAR(225),
+    //   response3 VARCHAR(225),
+    //   userpreference VARCHAR(225),
+    //   "createdAt" TIMESTAMP
+    // );
+    // `);
 
     const result = await client.query(
       `
